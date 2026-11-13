@@ -48,6 +48,35 @@ if ('IntersectionObserver' in window) {
 
   document.querySelectorAll('.section h2, .intro-copy, .case, .service-grid details, .about .lead, #inquiry')
     .forEach((element) => reveal.observe(element));
+
+  const counters = new IntersectionObserver((entries) => {
+    for (const { target, isIntersecting } of entries) {
+      if (!isIntersecting) continue;
+      counters.unobserve(target);
+      if (reducedMotion.matches) continue;
+      const finalText = target.textContent;
+      const value = Number(target.dataset.count);
+      const decimals = target.dataset.count.split('.')[1]?.length ?? 0;
+      const prefix = target.dataset.prefix ?? '';
+      let start;
+
+      function count(time) {
+        start ??= time;
+        const progress = Math.min(1, (time - start) / 950);
+        if (progress === 1 || reducedMotion.matches) {
+          target.textContent = finalText;
+          return;
+        }
+        const eased = 1 - (1 - progress) ** 3;
+        target.textContent = prefix + (value * eased).toFixed(decimals) + 'M';
+        requestAnimationFrame(count);
+      }
+
+      requestAnimationFrame(count);
+    }
+  }, { threshold: 0.5 });
+
+  document.querySelectorAll('[data-count]').forEach((element) => counters.observe(element));
 }
 
 form.addEventListener('submit', async (event) => {
