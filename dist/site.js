@@ -37,6 +37,37 @@ addEventListener('resize', updatePortrait);
 reducedMotion.addEventListener('change', updatePortrait);
 updatePortrait();
 
+const cover = hero.querySelector('.hero-cover');
+const playback = hero.querySelector('.hero-playback');
+let pausedByVisitor = false;
+
+function syncCover() {
+  if (reducedMotion.matches || pausedByVisitor) {
+    cover.pause();
+    if (reducedMotion.matches) hero.classList.remove('has-video');
+    return;
+  }
+  cover.play().catch(() => {});
+}
+
+cover.addEventListener('playing', () => {
+  hero.classList.add('has-video');
+  playback.hidden = false;
+  playback.textContent = 'Pause video';
+});
+cover.addEventListener('pause', () => {
+  playback.textContent = 'Play video';
+});
+playback.addEventListener('click', () => {
+  pausedByVisitor = !cover.paused;
+  syncCover();
+});
+reducedMotion.addEventListener('change', () => {
+  playback.hidden = reducedMotion.matches;
+  syncCover();
+});
+syncCover();
+
 if ('IntersectionObserver' in window) {
   const reveal = new IntersectionObserver((entries) => {
     for (const entry of entries) {
