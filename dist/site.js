@@ -37,6 +37,19 @@ addEventListener('resize', updatePortrait);
 reducedMotion.addEventListener('change', updatePortrait);
 updatePortrait();
 
+if ('IntersectionObserver' in window) {
+  const reveal = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      if (!entry.isIntersecting) continue;
+      reveal.unobserve(entry.target);
+      if (!reducedMotion.matches) entry.target.classList.add('reveal-in');
+    }
+  }, { threshold: 0.08 });
+
+  document.querySelectorAll('.section h2, .intro-copy, .case, .service-grid details, .about .lead, #inquiry')
+    .forEach((element) => reveal.observe(element));
+}
+
 form.addEventListener('submit', async (event) => {
   event.preventDefault();
   const endpoint = form.dataset.endpoint;
