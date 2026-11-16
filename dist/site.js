@@ -2,71 +2,7 @@ const form = document.querySelector('#inquiry');
 const status = document.querySelector('#form-status');
 const submit = form.querySelector('button[type="submit"]');
 
-const hero = document.querySelector('.hero');
-const portrait = hero.querySelector('.portrait');
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)');
-let frame = 0;
-let previousTime = 0;
-let position = 0;
-let target = 0;
-
-function movePortrait(time) {
-  const elapsed = previousTime ? Math.min(time - previousTime, 50) : 16;
-  previousTime = time;
-  position += (target - position) * (1 - Math.exp(-elapsed / 105));
-  if (Math.abs(target - position) < 0.001) position = target;
-  portrait.style.transform = `translate3d(-50%, ${position.toFixed(3)}%, 0)`;
-  frame = position === target ? 0 : requestAnimationFrame(movePortrait);
-  if (!frame) previousTime = 0;
-}
-
-function updatePortrait() {
-  if (reducedMotion.matches) {
-    cancelAnimationFrame(frame);
-    frame = previousTime = position = target = 0;
-    portrait.style.removeProperty('transform');
-    return;
-  }
-  const { top, height } = hero.getBoundingClientRect();
-  target = Math.max(0, Math.min(1, -top / height)) * 38;
-  if (!frame && position !== target) frame = requestAnimationFrame(movePortrait);
-}
-
-addEventListener('scroll', updatePortrait, { passive: true });
-addEventListener('resize', updatePortrait);
-reducedMotion.addEventListener('change', updatePortrait);
-updatePortrait();
-
-const cover = hero.querySelector('.hero-cover');
-const playback = hero.querySelector('.hero-playback');
-let pausedByVisitor = false;
-
-function syncCover() {
-  if (reducedMotion.matches || pausedByVisitor) {
-    cover.pause();
-    if (reducedMotion.matches) hero.classList.remove('has-video');
-    return;
-  }
-  cover.play().catch(() => {});
-}
-
-cover.addEventListener('playing', () => {
-  hero.classList.add('has-video');
-  playback.hidden = false;
-  playback.textContent = 'Pause video';
-});
-cover.addEventListener('pause', () => {
-  playback.textContent = 'Play video';
-});
-playback.addEventListener('click', () => {
-  pausedByVisitor = !cover.paused;
-  syncCover();
-});
-reducedMotion.addEventListener('change', () => {
-  playback.hidden = reducedMotion.matches;
-  syncCover();
-});
-syncCover();
 
 if ('IntersectionObserver' in window) {
   const reveal = new IntersectionObserver((entries) => {
@@ -135,3 +71,5 @@ form.addEventListener('submit', async (event) => {
     submit.disabled = false;
   }
 });
+
+
