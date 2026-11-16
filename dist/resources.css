@@ -1,0 +1,11 @@
+.resource-intro{background:var(--pale);color:var(--ink)}
+.resource-intro .eyebrow{color:#123499}
+.resource-intro .lead{color:#354263}
+.roadmap,.resource-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,260px),1fr));gap:16px;margin:24px 0 0}
+.roadmap{padding-left:24px}
+.roadmap li,.resource-grid article{background:#09133b;border:1px solid #ffffff29;border-radius:12px;padding:20px}
+.resource-grid h3,.roadmap h3{font-size:1.45rem}
+.resource-grid p:last-child,.roadmap p:last-child{margin-bottom:0}
+.resource-filters:not([hidden]){display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-top:24px}
+.resource-filters label{margin:0;flex:1 1 180px}
+.resource-filters p{margin:0 0 8px;color:#c4cdeb}
