@@ -9,3 +9,15 @@
 .resource-filters:not([hidden]){display:flex;align-items:end;gap:14px;flex-wrap:wrap;margin-top:24px}
 .resource-filters label{margin:0;flex:1 1 180px}
 .resource-filters p{margin:0 0 8px;color:#c4cdeb}
+.resource-grid{align-items:start}
+.resource-grid article:has(details[open]){grid-column:1/-1}
+.resource-article summary{display:grid;gap:8px;list-style:none}
+.resource-article summary::-webkit-details-marker{display:none}
+.resource-article summary h3,.resource-article summary .eyebrow{margin:0}
+.resource-article .read-label{color:#a4b9ff;font-size:.875rem}
+.resource-article .read-label::after{content:" +"}
+.resource-article[open] .read-label::after{content:" −"}
+.guide-body{max-width:72ch;padding-top:16px;margin-top:16px;border-top:1px solid #ffffff29}
+.guide-body h4{margin:15px 0 4px}
+.guide-body p{margin:0}
+.guide-body a{color:#c4d1ff}
