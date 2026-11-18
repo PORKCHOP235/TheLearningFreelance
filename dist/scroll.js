@@ -29,6 +29,14 @@ addEventListener('resize', queueScroll);
 motionPreference.addEventListener('change', queueScroll);
 drawScroll();
 
+const motionControl = document.querySelector('.motion-control');
+motionControl?.addEventListener('click', () => {
+  const paused = motionControl.getAttribute('aria-pressed') !== 'true';
+  motionControl.setAttribute('aria-pressed', String(paused));
+  motionControl.textContent = paused ? 'Play animation' : 'Pause animation';
+  document.querySelector('.workflow-motion-section').classList.toggle('workflow-paused', paused);
+});
+
 if ('IntersectionObserver' in window) {
   const observer = new IntersectionObserver((entries) => {
     for (const entry of entries) {

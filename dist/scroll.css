@@ -35,3 +35,16 @@ body{background:#f8faff;color:#00072d}
 .results-gallery>summary{padding:15px 0;font-weight:700}
 @media(max-width:740px){.service-columns{grid-template-columns:1fr;gap:20px}.photo-hero-copy{max-width:100%;transform:none}.photo-hero>img{transform:none}.photo-hero h1{font-size:clamp(2.7rem,9vw,4rem)}}
 @media(prefers-reduced-motion:reduce){.scroll-arrival{animation:none}.photo-hero>img,.photo-hero-copy{transform:none}}
+.workflow-motion-section{position:relative}
+.workflow-motion-section>div:first-child{max-width:750px}
+.motion-workflow{display:flex;align-items:center;padding:42px 0}
+.motion-node{display:grid;place-items:center;min-width:105px;min-height:80px;padding:15px;border:1px solid #b6c5ee;border-radius:16px;background:#edf2ff;color:#051650;font-weight:700}
+.motion-path{height:2px;flex:1;position:relative;background:#c0cdf0;overflow:hidden}
+.motion-path i{position:absolute;top:0;left:0;height:2px;width:32%;background:#1735e8;animation:workflow-signal 2.8s linear infinite}
+.motion-path:nth-of-type(4) i{animation-delay:.7s}
+.motion-path:nth-of-type(6) i{animation-delay:1.4s}
+@keyframes workflow-signal{from{transform:translateX(-110%)}to{transform:translateX(420%)}}
+.workflow-paused .motion-path i{animation-play-state:paused}
+.motion-control{color:#051650;border-color:#b6c5ee}
+@media(max-width:600px){.motion-workflow{flex-direction:column;padding:24px 0}.motion-node{width:100%;min-height:60px}.motion-path{flex:none;height:28px;width:2px}.motion-path i{width:2px;height:10px;animation-name:workflow-signal-down}@keyframes workflow-signal-down{from{transform:translateY(-110%)}to{transform:translateY(400%)}}}
+@media(prefers-reduced-motion:reduce){.motion-path i{animation:none;display:none}.motion-control{display:none}}
