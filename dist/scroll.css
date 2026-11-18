@@ -1,0 +1,37 @@
+:root{--line:#dce2ef}
+body{background:#f8faff;color:#00072d}
+.nav{border-color:#dce2ef}
+.section{border-color:#dce2ef}
+.eyebrow{color:#123499}
+.lead{color:#354263}
+.case{background:white;border-color:#dce2ef;color:#00072d}
+.featured{background:#051650;color:white}
+.featured .eyebrow{color:#a4b9ff}
+.service-columns{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:32px;margin:30px 0}
+.service-columns article{border-top:2px solid #123499;padding-top:18px}
+.service-columns h3{font-size:1.6rem}
+.contact{color:white}
+.contact .eyebrow{color:#a4b9ff}
+.photo-hero-copy{max-width:47%;animation:none}
+.photo-hero h1{font-size:clamp(2.6rem,5.2vw,5rem);line-height:1.03}
+.photo-hero .eyebrow{color:#c7d4ff}
+.photo-hero>img{transform:translateY(var(--hero-y,0px)) scale(1.08)}
+.photo-hero{overflow:hidden}
+.photo-hero-copy{transform:translateY(var(--copy-y,0px))}
+.evidence-grid figure{background:white;border-color:#dce2ef}
+.evidence-grid p{color:#354263}
+.resource-grid article,.roadmap li,.workflow-step{background:white;border-color:#dce2ef}
+.resource-grid p,.workflow-step dd,.resource-filters p{color:#354263}
+.resource-article .read-label,.workflow-step summary,.guide-body a{color:#123499}
+.guide-body{border-color:#dce2ef}
+.library-group{padding:22px 0;border-bottom:1px solid #dce2ef}
+.library-group>summary{font:600 1.4rem Geist,Arial,sans-serif;min-height:44px}
+.resource-jump{display:flex;flex-wrap:wrap;gap:12px;margin:20px 0}
+.resource-jump a{padding:10px 14px;border-radius:10px;border:1px solid #12349933;text-decoration:none}
+.scroll-progress{position:fixed;top:0;left:0;right:0;height:3px;background:#1735e8;transform:scaleX(var(--scroll-progress,0));transform-origin:left;z-index:20;pointer-events:none}
+.scroll-arrival{animation:scroll-arrival .6s cubic-bezier(.2,.8,.2,1) both}
+@keyframes scroll-arrival{from{opacity:.25;translate:0 18px}to{opacity:1;translate:0 0}}
+.results-gallery{margin-top:24px}
+.results-gallery>summary{padding:15px 0;font-weight:700}
+@media(max-width:740px){.service-columns{grid-template-columns:1fr;gap:20px}.photo-hero-copy{max-width:100%;transform:none}.photo-hero>img{transform:none}.photo-hero h1{font-size:clamp(2.7rem,9vw,4rem)}}
+@media(prefers-reduced-motion:reduce){.scroll-arrival{animation:none}.photo-hero>img,.photo-hero-copy{transform:none}}
