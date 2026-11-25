@@ -1,0 +1,7 @@
+/* Intro video section on the home page */
+.intro-video{display:grid;grid-template-columns:minmax(0,.8fr) minmax(0,1.2fr);gap:48px;align-items:center}
+.intro-video .eyebrow{color:var(--blue)}
+.intro-video h2{font-size:clamp(2.2rem,4vw,3.4rem)}
+.iv-player{margin:0;border-radius:20px;overflow:hidden;background:#00072d;box-shadow:0 30px 70px rgba(5,22,80,.25)}
+.iv-player video{display:block;width:100%;height:auto;aspect-ratio:16/9}
+@media(max-width:900px){.intro-video{grid-template-columns:minmax(0,1fr);gap:28px}.iv-player{order:-1}}

@@ -64,7 +64,7 @@ form.addEventListener('submit', async (event) => {
     });
     if (!response.ok) throw new Error('Submission failed');
     form.reset();
-    status.textContent = 'Thanks for telling me about your business. I’ll email you to coordinate a discovery call.';
+    status.textContent = 'Thanks for telling me about your business. I’ll email you to schedule your free growth review.';
   } catch {
     status.textContent = 'Your request could not be sent. Please try again.';
   } finally {
