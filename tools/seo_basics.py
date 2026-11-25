@@ -4,7 +4,7 @@ import json, re, sys
 from pathlib import Path
 
 DIST = Path(sys.argv[1])
-SITE = 'The Learning Freelance'
+SITE = 'Virtual Business Management'
 BASE = 'https://thelearningfreelancejonel.vercel.app/'
 OG_IMAGE = BASE + 'og-image.jpg'
 
@@ -22,7 +22,7 @@ PAGES = {
         'Restaurant Marketing Results & Operations Work | Jonel Enad',
         '$1.32M in Toast-attributed sales, 7.5M+ reel views, and $109.2K in sales for a home service startup. See the results and the screenshots.'),
     'resources.html': (
-        'AI Workflows & Business Tool Resources | The Learning Freelance',
+        'AI Workflows & Business Tools | Virtual Business Management',
         'Free guides on AI skills, business tools, and workflows for running and marketing a small business, plus a 100+ tool stack by stage.'),
     'tool-stack.html': (
         'Small Business Tool Stack: 100+ Tools by Stage | Jonel Enad',
@@ -80,7 +80,7 @@ for page, (title, desc) in PAGES.items():
              f'<meta property="og:image" content="{OG_IMAGE}">\n'
              '<meta property="og:image:width" content="1200">\n'
              '<meta property="og:image:height" content="630">\n'
-             '<meta property="og:image:alt" content="Jonel Enad, virtual business manager, The Learning Freelance">\n'
+             '<meta property="og:image:alt" content="Jonel Enad, Virtual Business Management">\n'
              '<meta name="twitter:card" content="summary_large_image">\n'
              f'<meta name="twitter:title" content="{esc(title)}">\n'
              f'<meta name="twitter:description" content="{esc(desc)}">\n'

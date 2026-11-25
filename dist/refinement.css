@@ -50,3 +50,22 @@ footer{border-top:1px solid #dce2ef}
 .workflow-motion-section .motion-control{justify-self:start}
 .workflow-motion-section .motion-path{min-width:18px}
 @media(max-width:900px){.workflow-motion-section{grid-template-columns:minmax(0,1fr);gap:12px}.workflow-motion-section .motion-workflow{width:100%}}
+
+/* ---------- Virtual Business Management logo lockup ---------- */
+.nav .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;letter-spacing:0}
+.nav .brand img{width:48px;height:auto;flex:none;filter:none}
+.brand-text{display:grid;line-height:1}
+.brand-text b{font:700 .98rem/1 Geist,Arial,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#021853}
+.brand-text small{margin-top:5px;font:600 .62rem/1 Geist,Arial,sans-serif;letter-spacing:.42em;text-transform:uppercase;color:#021853}
+@media(max-width:520px){.nav .brand img{width:40px}.brand-text b{font-size:.84rem}.brand-text small{font-size:.54rem;letter-spacing:.34em}}
+
+/* Balanced lockup: V as tall as both text lines, MANAGEMENT spans the full width of VIRTUAL BUSINESS */
+.nav .brand{gap:12px;align-items:center}
+.nav .brand img{width:auto;height:34px}
+.brand-text{display:inline-grid;line-height:1}
+.brand-text b{font-size:1rem;letter-spacing:.07em}
+.brand-text small{display:block;margin-top:6px;font-size:.6rem;letter-spacing:0;text-align:justify;text-align-last:justify}
+@media(max-width:520px){.nav .brand img{height:28px}.brand-text b{font-size:.84rem}.brand-text small{font-size:.52rem;margin-top:5px}}
+.brand-text small{display:flex;justify-content:space-between}
+.brand-text small i{font-style:normal}
+.brand-text .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
