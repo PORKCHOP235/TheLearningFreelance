@@ -62,11 +62,13 @@ form.addEventListener('submit', async (event) => {
       headers: { Accept: 'application/json' },
       body: new FormData(form),
     });
-    if (!response.ok) throw new Error('Submission failed');
+    // FormSubmit answers 200 with {"success": "false"} when something is wrong, so check the body too.
+    const result = await response.json().catch(() => ({}));
+    if (!response.ok || String(result.success) === 'false') throw new Error(result.message || 'Submission failed');
     form.reset();
     status.textContent = 'Thanks for telling me about your business. I’ll email you to schedule your free growth review.';
   } catch {
-    status.textContent = 'Your request could not be sent. Please try again.';
+    status.textContent = 'Your request could not be sent. Please try again, or email enadjonel18@gmail.com.';
   } finally {
     submit.disabled = false;
   }
