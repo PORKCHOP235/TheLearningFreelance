@@ -490,3 +490,11 @@
 @keyframes cat-tail{from{transform:rotate(-8deg)}to{transform:rotate(10deg)}}
 @keyframes cat-z{0%{opacity:0;transform:translate(0,0)}40%{opacity:1}100%{opacity:0;transform:translate(6px,-10px)}}
 .hq-cat .bbi{width:56px}.cat-svg{width:56px;height:44px}
+
+/* ================= v8: reliable taps + follow camera ================= */
+.hq-floor *{pointer-events:none}
+.hq-floor .av-fig,.hq-floor .hq-cat .bbi{pointer-events:auto}
+.hq-scene{-webkit-tap-highlight-color:transparent}
+.hq-cam-ui button[aria-pressed="true"]{background:#fff;color:var(--navy)}
+@media(max-width:760px){.hq-cam-ui{flex-wrap:wrap;justify-content:center}.hq-cam-ui button{width:40px;height:40px}}
+@media(max-width:760px){.hq-cam-ui{flex-wrap:nowrap;gap:2px}.hq-cam-ui button{width:38px;height:38px}}

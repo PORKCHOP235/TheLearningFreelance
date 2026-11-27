@@ -145,6 +145,7 @@
       for (const tm of [...timers]) { tm.left -= dt; if (tm.left <= 0) { timers.delete(tm); tm.res(); } }
       for (const w of walkers.values()) step(w, dt);
       for (const c of cats) catStep(c, dt);
+      followTick(t);
       if (holder) { const w = walkers.get(holder); token.style.left = `${w.x}px`; token.style.top = `${w.y}px`; }
     }
     requestAnimationFrame(frame);
@@ -299,19 +300,47 @@
   }
 
   /* ---------- Fit and camera ---------- */
-  let s = 1;
+  let s = 1, sceneH = 600, follow = false, lastUserCam = 0, lastFollow = 0;
   const cam = { rx: 50, rz: -12, z: 1, px: 0, py: 0 };
+  // Pan values that put floor point (x, y) in the middle of the box at zoom z.
+  function aim(x, y, z = cam.z) {
+    const r = cam.rz * Math.PI / 180, t = cam.rx * Math.PI / 180;
+    const dx = x - 780, dy = y - 520;
+    const X = z * (dx * Math.cos(r) - dy * Math.sin(r));
+    const Y = z * (dx * Math.sin(r) + dy * Math.cos(r)) * Math.cos(t);
+    return { px: -X, py: sceneH / (2 * s) - 640 - Y + 45 * z };
+  }
+  const followBtn = root.querySelector('[data-cam="follow"]');
+  function setFollow(on) {
+    follow = on;
+    if (followBtn) { followBtn.setAttribute('aria-pressed', String(on)); }
+  }
+  function followTick(now) {
+    if (!follow || selected || now - lastUserCam < 5000 || now - lastFollow < 450) return;
+    lastFollow = now;
+    const walker = [...walkers.values()].find(w => w.path.length && getComputedStyle(w.el).display !== 'none');
+    const w = walker || (holder && walkers.get(holder));
+    if (!w) return;
+    const t = aim(w.x, w.y);
+    if (Math.abs(t.px - cam.px) + Math.abs(t.py - cam.py) > 10) setCam(t);
+  }
   const HOME = { ...cam };
   function fit() {
     s = Math.min(1, scene.clientWidth / 1880);
     world.style.transform = `scale(${s})`;
-    const hgt = Math.max(340, Math.round(1180 * s));
-    scene.style.height = `${hgt}px`;
-    // Small screens start zoomed in and centred, so the office fills the box.
+    // Phones get a taller box, a close-up zoom, and a camera that follows the work.
     const small = s < 0.4;
-    HOME.z = small ? 1.5 : 1;
-    HOME.py = small ? (hgt / 2 - 640 * s) / s : 0;
-    if (!fit.done) { Object.assign(cam, HOME); fit.done = true; }
+    const hgt = small ? 460 : Math.max(340, Math.round(1180 * s));
+    scene.style.height = `${hgt}px`;
+    sceneH = hgt;
+    HOME.z = small ? 2.6 : 1;
+    HOME.px = 0; HOME.py = 0;
+    if (!fit.done) {
+      Object.assign(cam, HOME);
+      setFollow(small);
+      if (small) Object.assign(cam, aim(...(walkers.get('ava') ? [walkers.get('ava').x, walkers.get('ava').y] : [780, 520]), cam.z));
+      fit.done = true;
+    }
     panel.classList.toggle('hq-small', s < 0.4);
     applyCam();
   }
@@ -346,12 +375,14 @@
   root.querySelector('.hq-cam-ui').addEventListener('click', e => {
     const b = e.target.closest('[data-cam]'); if (!b) return;
     const a = b.dataset.cam;
+    if (a === 'follow') { setFollow(!follow); lastUserCam = 0; return; }
+    lastUserCam = performance.now();
     if (a === 'in') setCam({ z: cam.z * 1.3 });
     if (a === 'out') setCam({ z: cam.z / 1.3 });
     if (a === 'left') setCam({ rz: cam.rz - 45 });
     if (a === 'right') setCam({ rz: cam.rz + 45 });
     if (a === 'tilt') setCam({ rx: cam.rx > 60 ? 36 : cam.rx < 44 ? 50 : 68 });
-    if (a === 'reset') setCam({ ...HOME });
+    if (a === 'reset') { setCam({ ...HOME }); lastUserCam = 0; }
   });
 
   const pts = new Map();
@@ -377,7 +408,8 @@
       return;
     }
     const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
-    if (!drag.moved && Math.hypot(dx, dy) < 5) return;
+    if (!drag.moved && Math.hypot(dx, dy) < (e.pointerType === 'touch' ? 10 : 5)) return;
+    lastUserCam = performance.now();
     drag.moved = true;
     scene.classList.add('is-dragging');
     if (drag.pan) setCam({ px: drag.start.px + dx / s, py: drag.start.py + dy / s });
@@ -388,11 +420,18 @@
     pts.delete(e.pointerId);
     scene.classList.remove('is-dragging');
     if (wasClick && e.type === 'pointerup') {
-      const hit = document.elementFromPoint(e.clientX, e.clientY);
-      const kitty = hit && hit.closest('.hq-cat');
-      if (kitty && scene.contains(kitty)) { meow(kitty); if (!drag) return; }
-      const av = hit && hit.closest('.av');
-      if (av && scene.contains(av)) select(av.dataset.agent);
+      // Pick the nearest visible person or cat to the tap, so small targets are easy to hit.
+      let best = null;
+      root.querySelectorAll('.av, .hq-cat').forEach(el => {
+        const f = el.querySelector('.av-fig, .cat-svg');
+        const r = f && f.getBoundingClientRect();
+        if (!r || !r.width) return;
+        const dx = Math.max(r.left - e.clientX, 0, e.clientX - r.right), dy = Math.max(r.top - e.clientY, 0, e.clientY - r.bottom);
+        const d = Math.hypot(dx, dy);
+        if (d < 26 && (!best || d < best.d)) best = { d, el };
+      });
+      if (best && best.el.classList.contains('hq-cat')) meow(best.el);
+      else if (best) select(best.el.dataset.agent);
     }
     if (!pts.size) drag = null;
   }
@@ -529,6 +568,7 @@
     chat.replaceChildren();
     card.hidden = false;
     focusOn(av);
+    if (innerWidth <= 760) setTimeout(() => card.scrollIntoView({ block: 'nearest', behavior: 'smooth' }), 350);
     reply(a.hi, id);
   }
   function reply(text, id, question) {
