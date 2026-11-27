@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" viewBox="0 0 80 80">
+  <rect width="80" height="80" fill="#d2b489"/>
+  <g stroke="#bfa074" stroke-width="1">
+    <g fill="#d8bd94">
+      <path d="M0 0l20 20v20L0 20z"/><path d="M40 0l20 20v20L40 20z"/>
+      <path d="M0 40l20 20v20L0 60z"/><path d="M40 40l20 20v20L40 60z"/>
+    </g>
+    <g fill="#d0b286">
+      <path d="M20 20L40 0v20L20 40z"/><path d="M60 20L80 0v20L60 40z"/>
+      <path d="M20 60l20-20v20L20 80z"/><path d="M60 60l20-20v20L60 80z"/>
+    </g>
+    <g fill="#cdae82">
+      <path d="M0 20l20 20v0L0 40z" opacity="0"/>
+    </g>
+  </g>
+</svg>
